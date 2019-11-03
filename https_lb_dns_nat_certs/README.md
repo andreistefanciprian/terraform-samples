@@ -1,5 +1,5 @@
 
-# Building an HTTPS webserver with High Availability in GCP
+# Building an HTTPS webserver with High Availability in GCP + Cloud NAT + Cloud DNS + Stackdriver Logging
 
 In this setup we're building the components mentioned below using terraform.
 
@@ -7,6 +7,7 @@ Terraform Infrastructure Layer:
 - Compute Engine templates for Ubuntu VM that is going to have NGINX installed via startup script
 - Single Zone Managed Instance Group with Autoscaling Enabled for each region
 - HTTPS Global LB
+- Stackdriver logging for startup and nginx logs
 
 Terraform Static Layer:
 - Network and subnet in us-central1 and europe-west1 regions
