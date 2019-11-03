@@ -1,7 +1,11 @@
 
-# Building an HTTPS webserver with High Availability in GCP + Cloud NAT + Cloud DNS + Stackdriver Logging
+# Build GCP HTTPS Load Balancer with High Availability, Cloud NAT, Cloud DNS, Stackdriver Logging and SSL certificates
 
-In this setup we're building the components mentioned below using terraform.
+In this setup we're building an NGINX reverse proxy running on port 443 with SSL certificates.
+Behind the reverse proxy sits an HTTP webserver running on port 80.
+Outside users can access the webserver via URL (eg: https://example.com).
+
+The entire scenario is built with terraform.
 
 Terraform Infrastructure Layer:
 - Compute Engine templates for Ubuntu VM that is going to have NGINX installed via startup script
