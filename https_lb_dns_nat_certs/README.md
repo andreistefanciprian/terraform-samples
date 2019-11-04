@@ -18,7 +18,7 @@ Terraform Static Layer:
 - Firewall ingress rule to allow ICMP, SSH and HTTPS traffic
 - Reserve Global IP Address for HTTPS Load Balancer
 - Cloud NAT and Router for each zone
-- DNZ Zone and records for domain name devopsnation.co.uk
+- DNZ Zone and records for domain name example.com
 
 
 # Prerequisites
@@ -27,7 +27,7 @@ Prior to running terraform we need to have the following:
 - GCP bucket to upload nginx.conf and startup.sh files (eg: gs://secrets-app)
 - Manually upload into secrets file the SSL certificates for your domain name
 - Make certs available in the infra/include/certs folder
-- Domain name devopsnation.co.uk (Can be bought at https://domains.google.com)
+- Domain name example.com (Can be bought at https://domains.google.com)
 
 
 # Setup authentication and authorization for terraform to access GCP project
@@ -67,5 +67,5 @@ terraform destroy -auto-approve
 # Test HTTPS LB autoscales and uses servers in all regions
 
 ```buildoutcfg
-siege -c250 -t100S https://devopsnation.co.uk -v
+siege -c250 -t100S https://example.com -v
 ```
