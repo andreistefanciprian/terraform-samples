@@ -47,16 +47,16 @@ terraform init
 terraform plan
 terraform apply -auto-approve
 
+# Note: Once DNS zone is built make sure you have the same name servers in your domain name manager app (https://domains.google.com/)
+
 # Build GCP resources for infra layer
 cd infra
 terraform init
-terraform plan
-terraform apply -auto-approve
+terraform plan && terraform apply -auto-approve
 
 # Destroy GCP resources across all layers
 cd infra
-terraform init
-terraform destroy -auto-approve
+terraform init && terraform destroy -auto-approve
 
 cd static
 terraform init

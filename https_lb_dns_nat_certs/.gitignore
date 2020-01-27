@@ -1,5 +1,5 @@
 .terraform
 static/.terraform
 infra/.terraform
-infra/include/certs
 .idea
+*.json

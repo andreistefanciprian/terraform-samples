@@ -19,14 +19,14 @@ resource "google_compute_instance_template" "default_us" {
   description = "This template is used to create compute engine instances."
 
   instance_description = "Compute Engine running an HTTP server"
-  machine_type         = "f1-micro"
+  machine_type         = var.machine_type
   can_ip_forward       = false
 
   tags = ["backend"]
 
   // Create a new boot disk from an image
   disk {
-    source_image = "ubuntu-1804-bionic-v20191021"
+    source_image = var.os_image
     auto_delete  = true
     boot         = true
   }
@@ -63,25 +63,24 @@ resource "google_compute_instance_template" "default_us" {
 }
 
 
-
 resource "google_compute_instance_group_manager" "default_us" {
-
+  provider = google-beta
   name = "${var.name}-appserver-igm-us"
 
   base_instance_name = "${var.name}-app-us"
-  instance_template  = "${google_compute_instance_template.default_us.self_link}"
-  update_strategy    = "NONE"
+
+  version {
+    name              = "default_us"
+    instance_template  = "${google_compute_instance_template.default_us.self_link}"
+  }
+
   zone               = var.zone_us
 
-    named_port {
-      name = "https"
-      port = 443
-    }
+  named_port {
+    name = "https"
+    port = 443
+  }
 
-  //  auto_healing_policies {
-  //    health_check      = "${google_compute_health_check.autohealing.self_link}"
-  //    initial_delay_sec = 60
-  //  }
 }
 
 resource "google_compute_autoscaler" "default_us" {
@@ -109,14 +108,14 @@ resource "google_compute_instance_template" "default_eu" {
   description = "This template is used to create compute engine instances."
 
   instance_description = "Compute Engine running an HTTP server"
-  machine_type         = "f1-micro"
+  machine_type         = var.machine_type
   can_ip_forward       = false
 
   tags = ["backend"]
 
   // Create a new boot disk from an image
   disk {
-    source_image = "ubuntu-1804-bionic-v20191021"
+    source_image = var.os_image
     auto_delete  = true
     boot         = true
   }
@@ -155,23 +154,23 @@ resource "google_compute_instance_template" "default_eu" {
 
 
 resource "google_compute_instance_group_manager" "default_eu" {
-
+  provider = google-beta
   name = "${var.name}-appserver-igm-eu"
 
   base_instance_name = "${var.name}-app-eu"
-  instance_template  = "${google_compute_instance_template.default_eu.self_link}"
-  update_strategy    = "NONE"
+
   zone               = var.zone_eu
 
-    named_port {
-      name = "https"
-      port = 443
-    }
+  version {
+    name              = "default_eu"
+    instance_template  = "${google_compute_instance_template.default_eu.self_link}"
+  }
 
-  //  auto_healing_policies {
-  //    health_check      = "${google_compute_health_check.autohealing.self_link}"
-  //    initial_delay_sec = 60
-  //  }
+  named_port {
+    name = "https"
+    port = 443
+  }
+
 }
 
 resource "google_compute_autoscaler" "default_eu" {

@@ -44,15 +44,3 @@ variable "secrets_bucket" {
   type        = string
   default     = "secrets-app"
 }
-
-variable "machine_type" {
-  description = "GCP machine type"
-  type        = string
-  default     = "n1-standard-1"
-}
-
-variable "os_image" {
-  description = "OS image to use"
-  type        = string
-  default     = "ubuntu-1804-bionic-v20191021"
-}
