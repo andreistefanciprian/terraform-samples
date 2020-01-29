@@ -21,6 +21,7 @@ Terraform Static Layer:
 
 
 # Prerequisites
+
 Prior to running terraform we need to have the following:
 * GCP bucket to store terraform state files (eg: gs://secrets-terraform)
 * Manually upload into secrets file the SSL certificates for your domain name
@@ -29,6 +30,7 @@ Prior to running terraform we need to have the following:
 
 
 # Setup authentication and authorization for terraform to access GCP project
+
 Create a terraform GCP Service Account with Project Owner role permission.
 Download the Service Account key locally.
 
@@ -37,10 +39,11 @@ Point GOOGLE_APPLICATION_CREDENTIALS env var to the key location on your machine
 export GOOGLE_APPLICATION_CREDENTIALS=/full_path/account.json
 ```
 # Build docker image
-```buildoutcfg
 
-```
+Please, follow instructions from Readme file at ../myapp
+
 # Build GCP resources with terraform
+
 ```buildoutcfg
 
 # Build GCP resources for static layer
@@ -56,13 +59,14 @@ terraform init
 terraform plan && terraform apply -auto-approve
 
 ```
-# kubectl config
+# Configuring cluster access for kubectl
+
 ```buildoutcfg
 export CLUSTER_NAME=myapp-gke-cluster
 export CLUSTER_ZONE=europe-west1
 gcloud container clusters get-credentials $CLUSTER_NAME --zone=$CLUSTER_ZONE
 ```
-# Test HTTPS LB autoscales and uses servers in all regions
+# Tests
 
 ```buildoutcfg
 siege -c250 -t100S https://example.com -v
