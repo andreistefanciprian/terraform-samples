@@ -71,7 +71,7 @@ gcloud container clusters get-credentials $CLUSTER_NAME --zone=$CLUSTER_ZONE
 ```buildoutcfg
 siege -c250 -t100S https://example.com -v
 
-URL=<PUBLIC_IP>
+URL=$(kubectl get svc myapp -o jsonpath="{.status.loadBalancer.ingress[*].ip}")
 for i in {1..20}; do curl -s -m5 $URL; done
 i=1; while [[ $i -le 20 ]]; do curl -s -m5 $URL; let i=i+1; done
 
