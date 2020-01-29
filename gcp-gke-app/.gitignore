@@ -1,0 +1,5 @@
+.terraform
+static/.terraform
+infra/.terraform
+.idea
+*.json
