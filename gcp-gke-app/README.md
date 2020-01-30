@@ -1,10 +1,12 @@
 
 # Description
 
-In this setup we're building a nodejs app running on port 8080 and exposed to the internet via a Kubernetes Loadbalancer type service on port 80.
-The application docker container will be deployed as a kubernetes deployment with an horizontal pod autoscaler attached.
-After all resources are built we will use siege to apply some load on our service and observe the horizontal pod autoscaler in action.
-Cloud infrastructure is being automated with terraform.
+In this scenario we're building a nodejs app that can be accessed via a domain name, http://devopsnation.co.uk.
+The app is exposed to the internet via a Kubernetes Loadbalancer type service.
+The app is built using Docker with Google Cloud Build (https://cloud.google.com/cloud-build/)
+The app is deployed as a kubernetes deployment with an horizontal pod autoscaler attached.
+After all resources are built we perform a load test on the kubernetes service to trigger the horizontal pod autoscaler.
+The GCP cloud infrastructure is being automated with terraform.
 
 #### Terraform state layers description
 
@@ -15,10 +17,12 @@ Terraform Static Layer:
 * DNZ Zone and records for domain name devopsnation.co.uk
 
 Terraform Infrastructure Layer:
-* Google Kubernetes Cluster
+* Google Kubernetes regional Cluster, with nodes in every region zone
 * Kubernetes deployment, LoadBalancer service and Horizontal Pod Autoscaler for nodejs app
 
-# Tools used
+#### Tools used
+
+* Cloud Build
 * Terraform v0.12.20
 * Docker
 * Kubernetes
