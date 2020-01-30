@@ -1,19 +1,20 @@
 
-# Build NodeJS App GCP HTTPS Load Balancer with High Availability, Cloud DNS, Stackdriver Logging and SSL certificates
+# Build NodeJS App in GCP HTTPS Load Balancer with High Availability, Cloud DNS, Stackdriver Logging and SSL certificates
 
 In this setup we're building a nodejs app running on port 8080 and exposed to the internet via a Kubernetes Loadbalancer type service on port 80.
 The application docker container will be deployed as a kubernetes deployment with an horizontal pod autoscaler attached.
-After all resources are built we will user siege to apply some load on our service and observe the horizontal pod autoscaler in action.
-
+After all resources are built we will use siege to apply some load on our service and observe the horizontal pod autoscaler in action.
+Cloud infrastructure is being automated with terraform.
 
 Tools used:
 * Terraform v0.12.20
 * Docker
 * Kubernetes
+* siege (http load test)
 
 Terraform Infrastructure Layer:
 * Google Kubernetes Cluster
-* Kubernetes deployment and LoadBalancer service for nodejs app
+* Kubernetes deployment, LoadBalancer service and Horizontal Pod Autoscaler for nodejs app
 
 Terraform Static Layer:
 * Network and subnet in europe-west1 region
