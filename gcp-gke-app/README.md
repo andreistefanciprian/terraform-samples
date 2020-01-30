@@ -1,20 +1,12 @@
 
-# Build NodeJS App in GCP HTTPS Load Balancer with High Availability, Cloud DNS, Stackdriver Logging and SSL certificates
+# Description
 
 In this setup we're building a nodejs app running on port 8080 and exposed to the internet via a Kubernetes Loadbalancer type service on port 80.
 The application docker container will be deployed as a kubernetes deployment with an horizontal pod autoscaler attached.
 After all resources are built we will use siege to apply some load on our service and observe the horizontal pod autoscaler in action.
 Cloud infrastructure is being automated with terraform.
 
-Tools used:
-* Terraform v0.12.20
-* Docker
-* Kubernetes
-* siege (http load test)
-
-Terraform Infrastructure Layer:
-* Google Kubernetes Cluster
-* Kubernetes deployment, LoadBalancer service and Horizontal Pod Autoscaler for nodejs app
+#### Terraform state layers description
 
 Terraform Static Layer:
 * Network and subnet in europe-west1 region
@@ -22,8 +14,17 @@ Terraform Static Layer:
 * Reserve Global IP Address for HTTPS Load Balancer (Kubernetes service)
 * DNZ Zone and records for domain name devopsnation.co.uk
 
+Terraform Infrastructure Layer:
+* Google Kubernetes Cluster
+* Kubernetes deployment, LoadBalancer service and Horizontal Pod Autoscaler for nodejs app
 
-# Prerequisites
+# Tools used
+* Terraform v0.12.20
+* Docker
+* Kubernetes
+* siege (http load test)
+
+#### Prerequisites
 
 Prior to running terraform we need to have the following:
 * GCP bucket to store terraform state files (eg: gs://secrets-terraform)
@@ -32,7 +33,7 @@ Prior to running terraform we need to have the following:
 * Domain name devopsnation.co.uk (managed from https://domains.google.com)
 
 
-# Setup authentication and authorization for terraform to access GCP project
+#### Setup authentication and authorization for terraform to access GCP project
 
 Create a terraform GCP Service Account with Project Owner role permission.
 Download the Service Account key locally.
@@ -43,11 +44,11 @@ Point GOOGLE_APPLICATION_CREDENTIALS env var to the key location on your machine
 export GOOGLE_APPLICATION_CREDENTIALS=/full_path/account.json
 ```
 
-# Build docker image
+#### Build docker image
 
 Please, follow instructions from README file at ../myapp
 
-# Build GCP resources with terraform
+#### Build GCP resources with terraform
 
 ```buildoutcfg
 
@@ -64,7 +65,7 @@ terraform init
 terraform plan && terraform apply -auto-approve
 
 ```
-# Configuring cluster access for kubectl
+#### Configuring cluster access for kubectl
 
 ```buildoutcfg
 export CLUSTER_NAME=myapp-gke-cluster
@@ -72,7 +73,7 @@ export CLUSTER_ZONE=europe-west1
 gcloud container clusters get-credentials $CLUSTER_NAME --zone=$CLUSTER_ZONE
 ```
 
-# Load test
+#### Load test
 
 ```buildoutcfg
 
@@ -93,7 +94,7 @@ i=1; while [[ $i -le 20 ]]; do curl -s -m5 $URL; let i=i+1; done
 
 ```
 
-# Destroy GCP resources with terraform
+#### Destroy GCP resources with terraform
 
 ```buildoutcfg
 cd infra
