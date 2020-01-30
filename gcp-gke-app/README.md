@@ -1,12 +1,12 @@
 
 # Description
 
-In this scenario we're building a nodejs app that can be accessed via a domain name, http://devopsnation.co.uk.
-The app is exposed to the internet via a Kubernetes Loadbalancer type service.
-The app is built using Docker with Google Cloud Build (https://cloud.google.com/cloud-build/)
-The app is deployed as a kubernetes deployment with an horizontal pod autoscaler attached.
-After all resources are built we perform a load test on the kubernetes service to trigger the horizontal pod autoscaler.
-The GCP cloud infrastructure is being automated with terraform.
+* In this scenario we're building a nodejs app that can be accessed via a domain name, http://devopsnation.co.uk.
+* The app is exposed to the internet via a Kubernetes Loadbalancer type service.
+* The app is built using Docker with Google Cloud Build (https://cloud.google.com/cloud-build/)
+* The app is deployed as a kubernetes deployment with an horizontal pod autoscaler attached.
+* After all resources are built we perform a load test on the kubernetes service to trigger the horizontal pod autoscaler.
+* The GCP cloud infrastructure is being automated with terraform.
 
 #### Terraform state layers description
 
