@@ -42,7 +42,7 @@ resource "kubernetes_deployment" "default" {
   }
 
   spec {
-    replicas = 3
+    replicas = 1
 
     selector {
       match_labels = {
@@ -65,11 +65,11 @@ resource "kubernetes_deployment" "default" {
 
           resources {
             limits {
-              cpu    = "200m"
+              cpu    = "100m"
               memory = "100Mi"
             }
             requests {
-              cpu    = "100m"
+              cpu    = "50m"
               memory = "50Mi"
             }
           }
@@ -92,4 +92,24 @@ resource "kubernetes_deployment" "default" {
       }
     }
   }
+}
+
+resource "kubernetes_horizontal_pod_autoscaler" "default" {
+  metadata {
+    name = var.name
+  }
+  spec {
+    max_replicas = 6
+    min_replicas = 2
+    target_cpu_utilization_percentage = "50"
+
+    scale_target_ref {
+      api_version = "extensions/v1beta1"
+      kind = "Deployment"
+      name = var.name
+    }
+  }
+  depends_on = [
+      kubernetes_deployment.default,
+  ]
 }
