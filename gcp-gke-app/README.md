@@ -3,7 +3,7 @@
 
 * In this scenario we're building a nodejs app that can be accessed via a domain name, http://devopsnation.co.uk.
 * The app is exposed to the internet via a Kubernetes Loadbalancer type service.
-* The app is built using Docker with Google Cloud Build (https://cloud.google.com/cloud-build/)
+* The app is built using Docker with Google Cloud Build (https://cloud.google.com/cloud-build/) and published to gcr.io repository.
 * The app is deployed as a kubernetes deployment with an horizontal pod autoscaler attached.
 * After all resources are built we perform a load test on the kubernetes service to trigger the horizontal pod autoscaler.
 * The GCP cloud infrastructure is being automated with terraform.
@@ -13,7 +13,7 @@
 Terraform Static Layer:
 * Network and subnet in europe-west1 region
 * Firewall ingress rule to allow NodePort traffic for debug purposes
-* Reserve Global IP Address for HTTPS Load Balancer (Kubernetes service)
+* Reserve Public IP Address for HTTP Load Balancer (Kubernetes service)
 * DNZ Zone and records for domain name devopsnation.co.uk
 
 Terraform Infrastructure Layer:
@@ -36,6 +36,9 @@ Prior to running terraform we need to have the following:
 * Make certs available in the infra/include/certs folder (TBD)
 * Domain name devopsnation.co.uk (managed from https://domains.google.com)
 
+Note: The certs will be required only when having an ingress service on top of a NodePort service. 
+At the moment this scenario is working except we can't associate a reserved IP address to the ingress service because of annotation error on the ingress service.
+For this reason the ingress service scenario is disabled.  
 
 #### Setup authentication and authorization for terraform to access GCP project
 
@@ -93,6 +96,7 @@ kubectl logs POD_NAME -f --timestamps
 
 # other debug commands
 URL=$(kubectl get svc myapp -o jsonpath="{.status.loadBalancer.ingress[*].ip}")
+URL=http://devopsnation.co.uk
 for i in {1..20}; do curl -s -m5 $URL; done
 i=1; while [[ $i -le 20 ]]; do curl -s -m5 $URL; let i=i+1; done
 

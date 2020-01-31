@@ -9,5 +9,9 @@ output "subnet" {
 }
 
 output "lb_ip" {
-  value = google_compute_global_address.default.address
+  value = google_compute_address.default.address
 }
+
+//output "global_lb_ip" {
+//  value = google_compute_global_address.default.address
+//}

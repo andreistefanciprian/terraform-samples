@@ -1,0 +1,59 @@
+# can't assign reserved IP to the ingress service due to annotations issue
+# deployment's service has to be of type NodePort
+
+# build Global HTTPS LB in GCP
+resource "kubernetes_ingress" "default" {
+
+  metadata {
+
+    name = var.name
+
+    annotations {
+      "kubernetes.io/ingress.global-static-ip-name" = "myapp-lb-address"
+      "kubernetes.io/ingress.allow-http" = "false"
+    }
+
+  }
+
+  spec {
+
+    backend {
+      service_name = var.name
+      service_port = 8080
+    }
+
+    rule {
+      host = var.domain_name
+      http {
+        path {
+          backend {
+            service_name = kubernetes_service.default.metadata.0.name
+            service_port = 8080
+          }
+
+          path = "/"
+        }
+
+      }
+    }
+
+    tls {
+      secret_name = "tls-secret"
+      hosts       = [var.domain_name, ]
+    }
+  }
+}
+
+# store certs as secrets. To be used by HTTPS LB
+resource "kubernetes_secret" "tls" {
+  metadata {
+    name = "tls-secret"
+  }
+
+  data = {
+    "tls.crt" = file("include/certs/certificate.crt")
+    "tls.key" = file("include/certs/private.key")
+  }
+
+  type = "kubernetes.io/tls"
+}

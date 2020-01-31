@@ -1,4 +1,4 @@
-
+# built GKE cluster
 data "google_client_config" "current" {}
 
 data "google_container_engine_versions" "default" {
@@ -26,9 +26,6 @@ resource "google_container_cluster" "default" {
 
   }
 
-  // Use legacy ABAC until these issues are resolved:
-  //   https://github.com/mcuadros/terraform-provider-helm/issues/56
-  //   https://github.com/terraform-providers/terraform-provider-kubernetes/pull/73
   enable_legacy_abac = true
 
   //  master_auth {
@@ -41,12 +38,6 @@ resource "google_container_cluster" "default" {
     when    = destroy
     command = "sleep 90"
   }
-
-  //  timeouts {
-  //    create = "20m"
-  //    update = "30m"
-  //    delete = "15m"
-  //  }
 
 }
 

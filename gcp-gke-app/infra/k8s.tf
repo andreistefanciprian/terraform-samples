@@ -1,14 +1,8 @@
 
-//resource "kubernetes_namespace" "staging" {
-//  metadata {
-//    name = "staging"
-//  }
-//}
-
+# k8s deployment
 resource "kubernetes_deployment" "default" {
   metadata {
     name = var.name
-    //    namespace = kubernetes_namespace.staging.metadata.0.name
     labels = {
       app = var.name
     }
@@ -66,6 +60,7 @@ resource "kubernetes_deployment" "default" {
   }
 }
 
+# k8s hpa
 resource "kubernetes_horizontal_pod_autoscaler" "default" {
   metadata {
     name = var.name
@@ -84,4 +79,30 @@ resource "kubernetes_horizontal_pod_autoscaler" "default" {
   depends_on = [
     kubernetes_deployment.default,
   ]
+}
+
+# k8s service
+resource "kubernetes_service" "default" {
+  metadata {
+    name = var.name
+  }
+
+  spec {
+    selector = {
+      app = var.name
+    }
+
+    //    session_affinity = "ClientIP"
+    session_affinity = "None"
+
+    port {
+      protocol    = "TCP"
+      port        = 80
+      target_port = 8080
+      node_port   = 30080
+    }
+
+    type             = "LoadBalancer"
+    load_balancer_ip = data.terraform_remote_state.static.outputs.lb_ip
+  }
 }
