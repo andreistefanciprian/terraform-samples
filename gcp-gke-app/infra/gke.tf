@@ -10,11 +10,11 @@ resource "google_container_cluster" "default" {
   location           = var.region
   initial_node_count = 1
   min_master_version = data.google_container_engine_versions.default.latest_master_version
-  network = data.terraform_remote_state.static.outputs.main_network
-  subnetwork = data.terraform_remote_state.static.outputs.subnet
+  network            = data.terraform_remote_state.static.outputs.main_network
+  subnetwork         = data.terraform_remote_state.static.outputs.subnet
 
   node_config {
-    tags = ["gke-node"]
+    tags         = ["gke-node"]
     disk_size_gb = "10"
 
     oauth_scopes = [
@@ -31,10 +31,10 @@ resource "google_container_cluster" "default" {
   //   https://github.com/terraform-providers/terraform-provider-kubernetes/pull/73
   enable_legacy_abac = true
 
-//  master_auth {
-//    username = "${var.gke_cluster_username}"
-//    password = "${var.gke_cluster_password}"
-//  }
+  //  master_auth {
+  //    username = "${var.gke_cluster_username}"
+  //    password = "${var.gke_cluster_password}"
+  //  }
 
   // Wait for the GCE LB controller to cleanup the resources.
   provisioner "local-exec" {
@@ -42,11 +42,11 @@ resource "google_container_cluster" "default" {
     command = "sleep 90"
   }
 
-//  timeouts {
-//    create = "20m"
-//    update = "30m"
-//    delete = "15m"
-//  }
+  //  timeouts {
+  //    create = "20m"
+  //    update = "30m"
+  //    delete = "15m"
+  //  }
 
 }
 

@@ -23,10 +23,10 @@ resource "google_compute_firewall" "fw_allow_node_port_access" {
   name    = "${var.name}-allow-node-port-access"
   network = google_compute_network.vpc_network.self_link
 
-  target_tags = ["gke-node"]
+  target_tags   = ["gke-node"]
   source_ranges = ["0.0.0.0/0"]
 
-//  enable_logging = true
+  //  enable_logging = true
 
   allow {
     protocol = "tcp"

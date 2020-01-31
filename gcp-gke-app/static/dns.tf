@@ -15,7 +15,7 @@ resource "google_dns_record_set" "www" {
 
   managed_zone = google_dns_managed_zone.app.name
 
-  rrdatas = [ google_dns_managed_zone.app.dns_name ]
+  rrdatas = [google_dns_managed_zone.app.dns_name]
 }
 
 resource "google_dns_record_set" "main" {
@@ -25,6 +25,6 @@ resource "google_dns_record_set" "main" {
 
   managed_zone = google_dns_managed_zone.app.name
 
-  rrdatas = [ google_compute_global_address.default.address ]
+  rrdatas = [google_compute_global_address.default.address]
 }
 

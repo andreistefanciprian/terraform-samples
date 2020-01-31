@@ -8,7 +8,7 @@
 resource "kubernetes_deployment" "default" {
   metadata {
     name = var.name
-//    namespace = kubernetes_namespace.staging.metadata.0.name
+    //    namespace = kubernetes_namespace.staging.metadata.0.name
     labels = {
       app = var.name
     }
@@ -71,17 +71,17 @@ resource "kubernetes_horizontal_pod_autoscaler" "default" {
     name = var.name
   }
   spec {
-    max_replicas = 6
-    min_replicas = 2
+    max_replicas                      = 6
+    min_replicas                      = 2
     target_cpu_utilization_percentage = "50"
 
     scale_target_ref {
       api_version = "extensions/v1beta1"
-      kind = "Deployment"
-      name = var.name
+      kind        = "Deployment"
+      name        = var.name
     }
   }
   depends_on = [
-      kubernetes_deployment.default,
+    kubernetes_deployment.default,
   ]
 }
