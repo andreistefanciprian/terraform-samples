@@ -82,8 +82,3 @@ resource "kubernetes_ingress" "default" {
     }
   }
 }
-
-# HTTPS LB public IP
-resource "google_compute_global_address" "lb_global_address" {
-  name = "global-staticip"
-}
