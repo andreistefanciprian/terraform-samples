@@ -5,33 +5,6 @@
 //  }
 //}
 
-
-resource "kubernetes_service" "default" {
-  metadata {
-//    namespace = kubernetes_namespace.staging.metadata.0.name
-    name      = var.name
-  }
-
-  spec {
-    selector = {
-      app = var.name
-    }
-
-//    session_affinity = "ClientIP"
-    session_affinity = "None"
-
-    port {
-      protocol    = "TCP"
-      port        = 80
-      target_port = 8080
-    }
-
-    type             = "LoadBalancer"
-    load_balancer_ip = data.terraform_remote_state.static.outputs.lb_ip
-  }
-}
-
-
 resource "kubernetes_deployment" "default" {
   metadata {
     name = var.name
@@ -42,7 +15,7 @@ resource "kubernetes_deployment" "default" {
   }
 
   spec {
-    replicas = 1
+    replicas = 2
 
     selector {
       match_labels = {
@@ -59,8 +32,7 @@ resource "kubernetes_deployment" "default" {
 
       spec {
         container {
-          image = "andreistefanciprian/kubia"
-//          image = "gcr.io/${var.project}/nodeapp"
+          image = "gcr.io/${var.project}/nodeapp"
           name  = var.name
 
           resources {
